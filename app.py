@@ -30,6 +30,18 @@ def about():
     return render_template("about.html")
 
 
+@app.route('/posts')
+def posts():
+    articles = Article.query.order_by(Article.date.desc()).all()
+    return render_template("posts.html", articles=articles)
+
+
+@app.route('/posts/<int:id>')
+def post_detail(id):
+    article = Article.query.get(id)
+    return render_template("post_detail.html", article=article)
+
+
 @app.route('/create-article', methods=['POST', 'GET'])  # отслеживание главной странички
 def create_article():
     if request.method == "POST":
@@ -42,7 +54,7 @@ def create_article():
         try:
             db.session.add(article)
             db.session.commit()
-            return redirect('/')
+            return redirect('/posts')
         except:
             return "При добавлении статьи произошла ошибка"
     else:
