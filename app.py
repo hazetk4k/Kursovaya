@@ -8,6 +8,22 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
+# id title price isActive      text
+# 1 Skirt1    25      True
+# 2 Skirt2    35      False
+# 3 Skirt3    45      True
+
+class Items(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150), nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    isActive = db.Column(db.Boolean, default=True)
+    text = db.Column(db.Text, nullable=False)
+
+    def __repr__(self):
+        return f"Товар: {self.title}"
+
+
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(300), nullable=False)
@@ -22,12 +38,32 @@ class Article(db.Model):
 @app.route('/')  # отслеживание главной странички
 @app.route('/home')
 def index():
-    return render_template("index.html")
+    items = Items.query.order_by(Items.price).all()
+    return render_template("index.html", items=items)
 
 
 @app.route('/about')  # отслеживание главной странички
 def about():
     return render_template("about.html")
+
+
+@app.route('/add_item', methods=['POST', 'GET'])  # отслеживание главной странички
+def add_item():
+    if request.method == "POST":
+        title = request.form['title']
+        price = request.form['price']
+        text = request.form['text']
+
+        item = Items(title=title, price=price, text=text)
+
+        try:
+            db.session.add(item)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "При добавлении товара что-то пошло не так..."
+    else:
+        return render_template("add_item.html")
 
 
 @app.route('/posts')
