@@ -6,18 +6,19 @@
 {% block body %}
 
 
-<div class="container">
+<div id="ft_text" class="container">
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
         {% for i in items %}
-        <div class="card-deck mb-3 text-center">
+        <div class="card-deck mb-1 text-center">
             <div class="col">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
-                        <h1 class="card-title pricing-card-title">{{ i.price }}<small
-                                class="text-muted fw-light">бел.руб.</small></h1>
+                        <h2 class="my-0 font-weight-normal">{{ i.title }}</h2>
                         <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">{{ i.title }}</h4>
-                            <a href="" class="btn btn-lg btn-block btn-outline-primary">В корзину</a>
+                            <h2 class="card-title pricing-card-title"><big>{{ i.price }}</big><sup
+                                    class="text-muted fw-light">BYN</sup></h2>
+                            <a href="" class="btn btn-outline-success">В корзину</a>
+                            <a href="/index/{{ i.id }}" class="btn btn-outline-primary">Подробнее</a>
                         </div>
                     </div>
                 </div>

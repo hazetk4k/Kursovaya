@@ -5,12 +5,14 @@
 {% endblock %}
 
 {% block body %}
-<div class="container">
+<div id="ft_text" class="container">
     <h1> Добавление товара </h1>
     <form method="post">
-        <input type="text" class="form-control" name="title" id="title" placeholder="Название товара"><br>
+        <input type="text" class="form-control" name="title" id="title" autocomplete="off"
+               placeholder="Название товара"><br>
         <input type="number" class="form-control" name="price" id="price" placeholder="Цена товара в рублях"><br>
-        <input type="text" class="form-control" name="text" id="text" placeholder="Информация о товаре"><br>
+        <input type="text" class="form-control" name="text" id="text" autocomplete="off"
+               placeholder="Информация о товаре"><br>
         <button class="btn btn-success" type="submit">Добавить товар</button>
     </form>
 </div>

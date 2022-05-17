@@ -8,11 +8,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
-# id title price isActive      text
-# 1 Skirt1    25      True
-# 2 Skirt2    35      False
-# 3 Skirt3    45      True
-
 class Items(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
@@ -64,6 +59,23 @@ def add_item():
             return "При добавлении товара что-то пошло не так..."
     else:
         return render_template("add_item.html")
+
+
+@app.route('/index/<int:id>/delete')
+def item_delete(id):
+    item = Items.query.get_or_404(id)
+
+    try:
+        db.session.delete(item)
+        db.session.commit()
+        return redirect('/home')
+    except:
+        return "При удалении товара произошла ошибка"
+
+@app.route('/index/<int:id>')
+def item_detail(id):
+    item = Items.query.get(id)
+    return render_template("item_detail.html", item=item)
 
 
 @app.route('/posts')
