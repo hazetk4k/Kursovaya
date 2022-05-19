@@ -1,10 +1,11 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = "some_key_hides_secret"
 db = SQLAlchemy(app)
 
 
@@ -48,13 +49,16 @@ def add_item():
         title = request.form['title']
         price = request.form['price']
         text = request.form['text']
-
+        if title == "" or price == "":
+            flash('При добавлении товара не были указаны ключевые элементы!', category='error')
+            return render_template("add_item.html")
         item = Items(title=title, price=price, text=text)
 
         try:
             db.session.add(item)
             db.session.commit()
-            return redirect('/')
+            flash('Успешно добавлен новый товар!', category='success')
+            return render_template("add_item.html")
         except:
             return "При добавлении товара что-то пошло не так..."
     else:
@@ -71,6 +75,7 @@ def item_delete(id):
         return redirect('/home')
     except:
         return "При удалении товара произошла ошибка"
+
 
 @app.route('/index/<int:id>')
 def item_detail(id):
@@ -125,13 +130,16 @@ def create_article():
         title = request.form['title']
         intro = request.form['intro']
         text = request.form['text']
-
+        if title == "" or intro == "" or text == "":
+            flash('При добавлении статьи не были указаны ключевые элементы!', category='error')
+            return render_template("create-article.html")
         article = Article(title=title, intro=intro, text=text)
 
         try:
             db.session.add(article)
             db.session.commit()
-            return redirect('/posts')
+            flash('Успешно добавлена новыя статья!', category='success')
+            return render_template("create-article.html")
         except:
             return "При добавлении статьи произошла ошибка"
     else:

@@ -13,5 +13,10 @@
         <textarea name="text" id="text" class="form-control" placeholder="Основной текст статьи"></textarea><br>
         <input type="submit" class="btn btn-success" value="Отправить">
     </form>
+    {% for cat, msg in get_flashed_messages(True) %}
+    <br>
+    <div class="flash {{cat}}">{{ msg }}</div>
+    <br>
+    {% endfor %}
 </div>
 {% endblock %}

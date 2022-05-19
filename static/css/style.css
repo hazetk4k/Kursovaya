@@ -5,10 +5,22 @@ padding-top: 10px;
 padding-right: 10px;
 }
 
-footer{
+footer{font-family: Arial;}
+
+#ft_text{font-family: Arial;}
+
+.flash {
 font-family: Arial;
+text-align: center;
+padding-right: 10px
 }
 
-#ft_text{
-font-family: Arial;
+.flash.success {
+border: 1px solid #21DB56;
+background: #00FF7F;
+}
+
+.flash.error{
+border: 1px solid #FF4343;
+background: #FF9C9C;
 }

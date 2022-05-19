@@ -15,5 +15,9 @@
                placeholder="Информация о товаре"><br>
         <button class="btn btn-success" type="submit">Добавить товар</button>
     </form>
+    {% for cat, msg in get_flashed_messages(True) %}
+    <br>
+    <div class="flash {{cat}}">{{ msg }}</div>
+    {% endfor %}
 </div>
 {% endblock %}

@@ -8,14 +8,14 @@
 <div id="ft_text" class="container">
     <h1> Все статьи на сайте </h1>
     {% if articles|length > 0 %}
-        {% for el in articles %}
-        <div class="alert alert-info">
-            <h2>{{ el.title }}</h2>
-            <p>{{ el.intro }}</p>
-            <p><b>Дата: {{ el.date.date() }}</b></p>
-            <a href="/posts/{{ el.id }}" class="btn btn-warning">Детальнее</a>
-        </div>
-        {% endfor %}
+    {% for el in articles %}
+    <div class="alert alert-info">
+        <h2>{{ el.title }}</h2>
+        <p>{{ el.intro }}</p>
+        <p><b>Дата: {{ el.date.date() }}</b></p>
+        <a href="/posts/{{ el.id }}" class="btn btn-warning">Детальнее</a>
+    </div>
+    {% endfor %}
     {% else %}
     <p>Статей на сайте пока нет</p>
     {% endif %}
