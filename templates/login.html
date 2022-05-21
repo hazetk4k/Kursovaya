@@ -12,7 +12,7 @@
 </head>
 <body>
 <form method="POST">
-    <div id="ft_text" class="container">
+    <div id="ft_text_log_reg" class="container">
         <div class="card mb-4 shadow-lg">
             <div class="card-body">
                 <h1>Вход в аккаунт</h1>
@@ -30,8 +30,8 @@
                         </tr>
                         <tr>
                             <td><a href="{{ url_for('register')}}"
-                                   class="btn btn-primary">Регистрация</a></td>
-                            <td><input type="submit" value="Выполнить вход"></td>
+                                   class="btn btn-dark">Регистрация</a></td>
+                            <td><input type="submit" value="Войти"></td>
                         </tr>
                     </table>
                     {% with messages = get_flashed_messages() %}

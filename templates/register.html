@@ -13,15 +13,15 @@
 <body>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
-<ul class="flashes">
+<div class="flashes">
     {% for message in messages %}
-    <li>{{ message }}</li>
+    {{ message }}
     {% endfor %}
-</ul>
+</div>
 {% endif %}
 {% endwith %}
 <form method="POST">
-    <div id="ft_text" class="container">
+    <div id="ft_text_log_reg" class="container">
         <div class="card mb-4 shadow-lg">
             <div class="card-body">
                 <h1>Регистрация</h1>
@@ -42,10 +42,10 @@
                                        placeholder="Введите пароль повторно"></td>
                         </tr>
                         <tr>
-                            <td><a href="{{ url_for('login_page')}}" class="btn btn-primary">Вход в
+                            <td><a href="{{ url_for('login_page')}}" class="btn btn-dark">Вход в
                                 аккаунт</a>
                             </td>
-                            <td><input type="submit" value="Register"></td>
+                            <td><input type="submit" value="Зарегистрироваться"></td>
                         </tr>
                     </table>
                 </div>

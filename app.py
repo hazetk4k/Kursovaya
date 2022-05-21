@@ -83,7 +83,7 @@ def register():
     password2 = request.form.get('password2')
 
     if request.method == 'POST':
-        if not (login or password or password2):
+        if not login or not password or not password2:
             flash("Нужно заполнить все поля!", category='error')
         elif password2 != password:
             flash("Введенные пароли должны быть одинаковыми!", category='error')

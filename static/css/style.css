@@ -1,8 +1,27 @@
 #head_style{
-background-image: linear-gradient(to right, #800080, #EE82EE);
+background-image: linear-gradient(to right, #2F4F4F, #778899);
 font-family: Arial;
 padding-top: 10px;
 padding-right: 10px;
+}
+
+td {
+  padding-bottom: 10px;
+  padding-right: 7px;
+}
+
+.ind-btn{
+padding-right: 6px;
+}
+
+input[type=submit], button[type=submit]{
+    color: white;
+    padding:5px 15px;
+    background:#32CD32;
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 
 #log_pg_style{
@@ -13,7 +32,10 @@ footer{font-family: Arial;}
 
 #ft_text{font-family: Arial;}
 
-
+#ft_text_log_reg{
+font-family: Arial;
+margin-top: 20px;
+}
 .flash {
 font-family: Arial;
 text-align: center;
