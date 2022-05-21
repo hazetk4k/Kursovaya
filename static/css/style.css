@@ -5,9 +5,14 @@ padding-top: 10px;
 padding-right: 10px;
 }
 
+#log_pg_style{
+background-image: linear-gradient(to right, #800080, #EE82EE);
+}
+
 footer{font-family: Arial;}
 
 #ft_text{font-family: Arial;}
+
 
 .flash {
 font-family: Arial;
@@ -21,6 +26,13 @@ background: #00FF7F;
 }
 
 .flash.error{
+border: 1px solid #FF4343;
+background: #FF9C9C;
+}
+
+.flashes{
+font-family: Arial;
+text-align: center;
 border: 1px solid #FF4343;
 background: #FF9C9C;
 }

@@ -51,19 +51,20 @@ def login_page():
     login = request.form.get('login')
     password = request.form.get('password')
 
-    if login and password:
-        user = User.query.filter_by(login=login).first()
-        if user and check_password_hash(user.password, password):
-            login_user(user)
+    if request.method == 'POST':
+        if login and password:
+            user = User.query.filter_by(login=login).first()
+            if user and check_password_hash(user.password, password):
+                login_user(user)
 
-            # next_page = request.args.get('next')
+                # next_page = request.args.get('next')
 
-            # return redirect(next_page)
-            return redirect(url_for('index'))
+                # return redirect(next_page)
+                return redirect(url_for('index'))
+            else:
+                flash("Логин или пароль введены неверно!", category='error')
         else:
-            flash("Логин или пароль введены неверно!")
-    else:
-        flash("Не указаны логин и пароль!")
+            flash("Не указаны логин и пароль!", category='error')
 
     return render_template('login.html')
 
@@ -83,9 +84,9 @@ def register():
 
     if request.method == 'POST':
         if not (login or password or password2):
-            flash("Нужно заполнить все поля!")
+            flash("Нужно заполнить все поля!", category='error')
         elif password2 != password:
-            flash("Введенные пароли должны быть одинаковыми!")
+            flash("Введенные пароли должны быть одинаковыми!", category='error')
         else:
             hash_pwd = generate_password_hash(password)
             new_user = User(login=login, password=hash_pwd)
