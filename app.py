@@ -1,8 +1,13 @@
 from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask_admin import Admin, expose, AdminIndexView
+from flask_admin.contrib.sqla import ModelView
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
+from cloudipsp import Api, Checkout
+
+MAX_CONTENT_LENGTH = 1024 * 1200
 
 app = Flask(__name__)
 app.secret_key = "some secret thing3412324"
@@ -14,6 +19,8 @@ manager = LoginManager(app)
 
 
 class Items(db.Model):
+    __tablename__ = "items"
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
     price = db.Column(db.Integer, nullable=False)
@@ -25,6 +32,8 @@ class Items(db.Model):
 
 
 class Article(db.Model):
+    __tablename__ = "articles"
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(300), nullable=False)
     intro = db.Column(db.String(300), nullable=False)
@@ -36,14 +45,36 @@ class Article(db.Model):
 
 
 class User(db.Model, UserMixin):
+    __tablename__ = "users"
+
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(128), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
+
+    def __repr__(self):
+        return '<User %r>' % self.login
+
+
+class AdminView(AdminIndexView):
+    @expose('/admin')
+    def admin_page(self):
+        return self.render_template('admin/index.html')
+
+
+admin = Admin(app, name='Страница админа', index_view=AdminView(), template_mode='bootstrap4', url='/admin')
+admin.add_view(ModelView(User, db.session, name='Пользователи'))
+admin.add_view(ModelView(Items, db.session, name='Товары'))
+admin.add_view(ModelView(Article, db.session, name='Статьи'))
 
 
 @manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page404.html', title="Страница не найдена", )
 
 
 @app.route('/login', methods=["GET", 'POST'])
@@ -56,10 +87,6 @@ def login_page():
             user = User.query.filter_by(login=login).first()
             if user and check_password_hash(user.password, password):
                 login_user(user)
-
-                # next_page = request.args.get('next')
-
-                # return redirect(next_page)
                 return redirect(url_for('index'))
             else:
                 flash("Логин или пароль введены неверно!", category='error')
@@ -106,23 +133,38 @@ def index():
     return render_template("index.html", items=items)
 
 
-@app.route('/about')  # отслеживание главной странички
+@app.route('/buy/<int:id>')
+def buy_item(id):
+    item = Items.query.get(id)
+
+    api = Api(merchant_id=1396424,  # тестовый
+              secret_key='test')
+    checkout = Checkout(api=api)
+    data = {
+        "currency": "BYN",
+        "amount": str(item.price) + "00"
+    }
+    url = checkout.url(data).get('checkout_url')
+    return redirect(url)
+
+
+@app.route('/about')
 def about():
     return render_template("about.html")
 
 
-@app.route('/add_item', methods=['POST', 'GET'])  # отслеживание главной странички
+@app.route('/add_item', methods=['POST', 'GET'])
 @login_required
 def add_item():
     if request.method == "POST":
         title = request.form['title']
         price = request.form['price']
         text = request.form['text']
+
         if title == "" or price == "":
             flash('При добавлении товара не были указаны ключевые элементы!', category='error')
             return render_template("add_item.html")
         item = Items(title=title, price=price, text=text)
-
         try:
             db.session.add(item)
             db.session.commit()
@@ -231,4 +273,5 @@ def redirect_to_signin(response):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)  # дебаг тру для вывода ошибок на страничках сайта
+    db.create_all()
+    app.run(debug=True, port=3434)  # дебаг тру для вывода ошибок на страничках сайта

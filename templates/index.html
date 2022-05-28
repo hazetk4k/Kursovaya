@@ -4,7 +4,11 @@
 Главная страница
 {% endblock %}
 {% block body %}
-
+{% if current_user.is_authenticated %}
+<div class="container">
+    <h4>Добро пожаловать, {{ current_user.login }}!</h4>
+</div>
+{% endif %}
 
 <div id="ft_text" class="container">
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
@@ -15,9 +19,12 @@
                     <div class="card-body">
                         <h2 class="my-0 font-weight-normal">{{ i.title }}</h2>
                         <div class="card-header">
+                            <div class="item-ava">
+                                    <img src="static/images/item-{{i.id}}.png"/>
+                            </div>
                             <h2 class="card-title pricing-card-title"><big>{{ i.price }}</big><sup
                                     class="text-muted fw-light">BYN</sup></h2>
-                            <a href="" class="btn btn-outline-success">В корзину</a>
+                            <a href="/buy/{{ i.id }}" class="btn btn-outline-success">В корзину</a>
                             <a href="/index/{{ i.id }}" class="btn btn-outline-primary">Подробнее</a>
                         </div>
                     </div>

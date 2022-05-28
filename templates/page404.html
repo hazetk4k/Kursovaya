@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}
+Страница отсутствует
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+<div class="container" id="ft_text">
+    <h4>Страница не найдена, вернуться на <a class="me-3 py-2 text-black" href="{{ url_for('index') }}">главную
+        страницу</a></h4>
+</div>
+{% endblock %}
