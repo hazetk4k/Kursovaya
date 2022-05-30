@@ -61,6 +61,7 @@ background: #FF9C9C;
 }
 
 .item-ava{
+margin: 0 auto;
 width: 300px;
 text-align: center;
 overflow: hidden;

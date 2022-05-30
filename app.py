@@ -52,6 +52,7 @@ class User(db.Model, UserMixin):
     login = db.Column(db.String(128), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
 
+
     def __repr__(self):
         return '<User %r>' % self.login
 
@@ -131,7 +132,7 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/')  # отслеживание главной странички
+@app.route('/')
 @app.route('/home')
 @login_required
 def index():
