@@ -12,10 +12,13 @@
 </head>
 <body>
 <div id="head_style">
-    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+    <div class="d-flex flex-column flex-md-row align-items-center pb-1 mb-0 border-bottom">
         <a href="/" class="d-flex align-items-center text-white text-decoration-none">
             <h2 class="container px-4">TopGear</h2>
         </a>
+        {% if current_user.is_authenticated %}
+        <h3 class="me-3 py-2 text-white">Добро пожаловать, {{ current_user.login }}!</h3>
+        {% endif %}
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
             <a class="me-3 py-2 text-white text-decoration-none" href="/">Главная страница</a>
             <a class="me-3 py-2 text-white text-decoration-none" href="/about">Про нас</a>

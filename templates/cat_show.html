@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}
-Главная страница
+{{ items.cat }}
 {% endblock %}
+
 {% block body %}
 <div class="d-flex flex-column flex-md-row" id="catalog">
     <span class="ind-btn"><a href="/1" class="list-group-item"><h6>Одежда</h6></a></span>
@@ -19,10 +20,10 @@
             <div class="col">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
-                        <h3 class="my-1 font-weight-normal" id="ind_pad">{{ i.title }}</h3>
+                        <h3 class="my-1 font-weight-normal" id="ind_pad">{{ i.id }}.{{ i.title }}</h3>
                         <div class="card-header">
                             <div class="item-ava">
-                                <img src="static/images/item-{{i.id}}.png"/>
+                                <img src="static/images/item-{{ i.id }}.png"/>
                             </div>
                             <h2 class="card-title pricing-card-title"><big>{{ i.price }}</big><sup
                                     class="text-muted fw-light">BYN</sup></h2>

@@ -13,7 +13,8 @@
         <input type="number" class="form-control" name="price" id="price" placeholder="Цена товара в рублях"><br>
         <input type="text" class="form-control" name="text" id="text" autocomplete="off"
                placeholder="Информация о товаре"><br>
-<!--        <input type="file" class="form-control" name="file" autocomplete="off"><br>-->
+        <input type="text" class="form-control" name="cat" id="cat" autocomplete="off"
+               placeholder="Категория: 1-одежда, 2-обувь, 3-инструменты, 4-рюкзаки, 5-прочее)"><br>
         <button type="submit">Добавить товар</button>
     </form>
     {% for cat, msg in get_flashed_messages(True) %}

@@ -26,6 +26,7 @@ class Items(db.Model):
     price = db.Column(db.Integer, nullable=False)
     isActive = db.Column(db.Boolean, default=True)
     text = db.Column(db.Text, nullable=False)
+    cat = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return f"Товар: {self.title}"
@@ -105,6 +106,7 @@ def logout():
 
 @app.route('/register', methods=["GET", 'POST'])
 def register():
+    users = User.query.all()
     login = request.form.get('login')
     password = request.form.get('password')
     password2 = request.form.get('password2')
@@ -115,6 +117,10 @@ def register():
         elif password2 != password:
             flash("Введенные пароли должны быть одинаковыми!", category='error')
         else:
+            for user in users:
+                if login == user.login:
+                    flash("Введенный логин занят другим пользователем!", category='error')
+                    return render_template('register.html')
             hash_pwd = generate_password_hash(password)
             new_user = User(login=login, password=hash_pwd)
             db.session.add(new_user)
@@ -129,8 +135,15 @@ def register():
 @app.route('/home')
 @login_required
 def index():
-    items = Items.query.order_by(Items.price).all()
+    items = Items.query.order_by(Items.id).all()
     return render_template("index.html", items=items)
+
+
+@app.route('/<int:cat>')
+@login_required
+def index_cat(cat):
+    items = Items.query.filter_by(cat=cat).order_by(Items.id)
+    return render_template("cat_show.html", items=items)
 
 
 @app.route('/buy/<int:id>')
@@ -160,11 +173,12 @@ def add_item():
         title = request.form['title']
         price = request.form['price']
         text = request.form['text']
+        cat = request.form['cat']
 
         if title == "" or price == "":
             flash('При добавлении товара не были указаны ключевые элементы!', category='error')
             return render_template("add_item.html")
-        item = Items(title=title, price=price, text=text)
+        item = Items(title=title, price=price, text=text, cat=cat)
         try:
             db.session.add(item)
             db.session.commit()
@@ -179,11 +193,19 @@ def add_item():
 @app.route('/index/<int:id>/delete')
 @login_required
 def item_delete(id):
+    # list_items = Items.query.all()
     item = Items.query.get_or_404(id)
 
     try:
         db.session.delete(item)
         db.session.commit()
+        # for ind in range(len(list_items)):
+        #     if len(list_items) == ind:
+        #         break
+        #     elif int(list_items[ind].id) + 1 != int(list_items[ind + 1].id):
+        #         pass
+        #     else:
+        #         continue
         return redirect('/home')
     except:
         return "При удалении товара произошла ошибка"
